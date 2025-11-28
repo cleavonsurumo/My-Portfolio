@@ -1,4 +1,4 @@
-
+import Link from 'next/link'
 
 export default function Contact2() {
 	return (
