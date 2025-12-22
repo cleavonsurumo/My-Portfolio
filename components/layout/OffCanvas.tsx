@@ -16,19 +16,19 @@ export default function OffCanvas({ isOffCanvas, handleOffCanvas }: any) {
 							<p className="fs-6 fw-medium text-200 mb-5">I'm always excited to take on new projects and collaborate with innovative minds.</p>
 							<div className="mb-3">
 								<span className="text-400 fs-5">Phone Number</span>
-								<p className="mb-0">+1-234-567-8901</p>
+								<p className="mb-0">+254-746-952-861</p>
 							</div>
 							<div className="mb-3">
 								<span className="text-400 fs-5">Email</span>
-								<p className="mb-0">contact@william.design</p>
+								<p className="mb-0">cleavon@cleavon.ke</p>
 							</div>
 							<div className="mb-3">
-								<span className="text-400 fs-5">Skype</span>
-								<p className="mb-0">WilliamDesignUX</p>
+								<span className="text-400 fs-5">Teams</span>
+								<p className="mb-0">cleavonsurumo</p>
 							</div>
 							<div className="mb-3">
 								<span className="text-400 fs-5">Address</span>
-								<p className="mb-0">0811 Erdman Prairie Road, Joaville, California 90210</p>
+								<p className="mb-0">Embassy house, Nairobi</p>
 							</div>
 						</div>
 						<div className="contact-list">
