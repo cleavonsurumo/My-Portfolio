@@ -6,7 +6,7 @@ export default function Services() {
 	return (
 		<>
 
-			<Layout headerStyle={1} footerStyle={1}>
+			<Layout headerSttyle={1} footerStyle={1}>
 				<div>
 					<section className="section-service-list pt-120 pb-150">
 						<div className="container">
@@ -23,7 +23,7 @@ export default function Services() {
 											<span className="text-300">Experiences</span>
 										</h3>
 										<p className="text-300 fs-5">
-											With expertise in mobile app and web design, I transform ideas into visually <br />
+											With expertise in web design, I transform ideas into visually <br />
 											stunning and user-friendly interfaces that captivate and retain users. <br />
 											Explore my work and see design in action.
 										</p>
