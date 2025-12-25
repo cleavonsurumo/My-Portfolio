@@ -44,18 +44,18 @@ export default function Header2({ scroll, isMobileMenu, handleMobileMenu,isOffCa
 								</div>
 								<div className="navbar-social d-flex align-items-center pe-5 pe-lg-0 me-5 me-lg-0">
 									<div className="d-md-flex d-none gap-3">
-										<Link href="/https://www.facebook.com/cleavonsurumo/">
+										<a href="https://facebook.com/cleavonsurumo/" target="_blank">
 											<i className="ri-facebook-circle-fill fs-18" />
-										</Link>
-										<Link href="/https://x.com/cleavonsurumo">
+										</a>
+										<a href="https://x.com/cleavonsurumo" target="_blank">
 											<i className="ri-twitter-x-fill fs-18" />
-										</Link>
-										<Link href="/https://www.linkedin.com/in/cleavonsurumo/">
+										</a>
+										<a href="/https://www.linkedin.com/in/cleavonsurumo/" target="_blank">
 											<i className="ri-linkedin-fill fs-18" />
-										</Link>
-										<Link href="/http://github.com/cleavonsurumo">
+										</a>
+										<a href="/http://github.com/cleavonsurumo" target="_blank">
 											<i className="ri-github-fill fs-18" />
-										</Link>
+										</a>
 									</div>
 									<div className="burger-icon burger-icon-white border rounded-3" onClick={handleMobileMenu}>
 										<span className="burger-icon-top" />
