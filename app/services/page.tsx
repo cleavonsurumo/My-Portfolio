@@ -6,7 +6,7 @@ export default function Services() {
 	return (
 		<>
 
-			<Layout headerSttyle={1} footerStyle={1}>
+			<Layout headerStyle={1} footerStyle={1}>
 				<div>
 					<section className="section-service-list pt-120 pb-150">
 						<div className="container">
