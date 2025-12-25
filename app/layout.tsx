@@ -26,10 +26,23 @@ const dmMono = DM_Mono({
 	variable: "--dmMono",
 	display: 'swap',
 })
-
 export const metadata: Metadata = {
-	title: "Cleavon",
+	title: "Cleavon Surumo",
 	description: "Cleavon - Personal Portfolio",
+	icons: {
+		icon: '/assets/imgs/home-page-2/hero-1/profile-pic.png',
+		shortcut: '/assets/imgs/home-page-2/hero-1/profile-pic.png',
+		apple: '/assets/imgs/home-page-2/hero-1/profile-pic.png',
+	},
+	openGraph: {
+		images: ['/assets/imgs/home-page-2/hero-1/profile-pic.png'],
+		title: 'Cleavon',
+		description: 'Cleavon - Personal Portfolio',
+	},
+	twitter: {
+		card: 'summary_large_image',
+		images: ['/assets/imgs/home-page-2/hero-1/profile-pic.png'],
+	},
 }
 
 export default function RootLayout({
@@ -39,6 +52,9 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang="en" data-bs-theme="dark" className="zelio">
+			<head>
+				<link rel="icon" href="/assets/imgs/home-page-2/hero-1/profile-pic.png" />
+			</head>
 			<body className={`${urbanist.variable} ${playfair_display.variable} ${dmMono.variable}`}>{children}</body>
 		</html>
 	)
