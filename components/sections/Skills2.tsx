@@ -102,7 +102,7 @@ export default function Skills2() {
 															<li className="mb-3">
 																<div className="d-flex flex-column flex-md-row gap-2">
 																	<p className="text-dark text-nowrap mb-0">Data Analytics:</p>
-																	<span className="text-300">Excel, Power BI, , Python, Tableau</span>
+																	<span className="text-300">Excel, Power BI, Python, Tableau</span>
 																</div>
 															</li>
 															<li className="mb-3">
