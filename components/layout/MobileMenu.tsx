@@ -34,9 +34,6 @@ export default function MobileMenu({ isMobileMenu, handleMobileMenu }: any) {
 											<Link className="nav-link" href="#portfolio">Portfolio</Link>
 										</li>
 										<li className="nav-item">
-											<Link className="nav-link" href="/pricing">Pricing</Link>
-										</li>
-										<li className="nav-item">
 											<Link className="nav-link" href="#blog">Blog</Link>
 										</li>
 										<li className="nav-item">
