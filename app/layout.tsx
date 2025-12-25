@@ -11,19 +11,19 @@ import { Urbanist, Playfair_Display, DM_Mono } from "next/font/google"
 const urbanist = Urbanist({
 	weight: ['300', '400', '500', '600', '700'],
 	subsets: ['latin'],
-	variable: "--urbanist",
+	variable: "--font-urbanist",
 	display: 'swap',
 })
 const playfair_display = Playfair_Display({
 	weight: ['400', '500', '600', '700'],
 	subsets: ['latin'],
-	variable: "--playpair",
+	variable: "--font-playfair",
 	display: 'swap',
 })
 const dmMono = DM_Mono({
 	weight: ['300', '400', '500'],
 	subsets: ['latin'],
-	variable: "--dmMono",
+	variable: "--font-dm-Mono",
 	display: 'swap',
 })
 export const metadata: Metadata = {
@@ -34,15 +34,7 @@ export const metadata: Metadata = {
 		shortcut: '/assets/imgs/home-page-2/hero-1/profile-pic.png',
 		apple: '/assets/imgs/home-page-2/hero-1/profile-pic.png',
 	},
-	openGraph: {
-		images: ['/assets/imgs/home-page-2/hero-1/profile-pic.png'],
-		title: 'Cleavon',
-		description: 'Cleavon - Personal Portfolio',
-	},
-	twitter: {
-		card: 'summary_large_image',
-		images: ['/assets/imgs/home-page-2/hero-1/profile-pic.png'],
-	},
+
 }
 
 export default function RootLayout({
@@ -51,11 +43,11 @@ export default function RootLayout({
 	children: React.ReactNode
 }>) {
 	return (
-		<html lang="en" data-bs-theme="dark" className="zelio">
+		<html lang="en" data-bs-theme="dark" className={`${dmMono.variable} ${urbanist.variable} ${playfair_display.variable} zelio`}>
 			<head>
 				<link rel="icon" href="/assets/imgs/home-page-2/hero-1/profile-pic.png" />
 			</head>
-			<body className={`${urbanist.variable} ${playfair_display.variable} ${dmMono.variable}`}>{children}</body>
+			<body>{children}</body>
 		</html>
 	)
 }
