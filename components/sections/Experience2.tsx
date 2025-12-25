@@ -74,11 +74,11 @@ export default function Experience2() {
 											<li className="text-dark mb-3">Collaborated with cross-functional teams to integrate new features seamlessly.</li>
 										</ul>
 										<div className="d-flex flex-wrap align-items-center gap-3 mt-7">
-											<Link href="#" className="text-300 border border-1 px-3 py-1">Python</Link>
-											<Link href="#" className="text-300 border border-1 px-3 py-1">TensorFlow</Link>
-											<Link href="#" className="text-300 border border-1 px-3 py-1">Angular</Link>
-											<Link href="#" className="text-300 border border-1 px-3 py-1">Kubernetes</Link>
-											<Link href="#" className="text-300 border border-1 px-3 py-1">GCP</Link>
+											<Link href="#" className="text-300 border border-1 px-3 py-1">Elementor</Link>
+											<Link href="#" className="text-300 border border-1 px-3 py-1">Gutenburg</Link>
+											<Link href="#" className="text-300 border border-1 px-3 py-1">Divi</Link>
+											<Link href="#" className="text-300 border border-1 px-3 py-1">Woocommerce</Link>
+											<Link href="#" className="text-300 border border-1 px-3 py-1">Power-Bi</Link>
 										</div>
 									</div>
 								</div>

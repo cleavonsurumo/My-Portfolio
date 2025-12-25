@@ -19,7 +19,7 @@ export default function Coporation2() {
 											<span className="text-linear-4 d-flex align-items-center"> Cooperation </span>
 										</div>
 										<h3 className="fw-medium">
-											More than +168 <span className="text-300">companies <br /></span> trusted <span className="text-300">worldwide_</span>
+											More than +60 <span className="text-300">companies <br /></span> trusted <span className="text-300">Kenya_</span>
 										</h3>
 										<div className="my-5 border border-1 rounded-2 p-3">
 											{/* Carausel Scroll */}
@@ -133,15 +133,15 @@ export default function Coporation2() {
 											<div className="d-flex flex-column gap-2">
 												<Link href="#">
 													<i className="ri-skype-fill" />
-													<span className="text-300">[skype] <span className="text-secondary-2">james.dev</span></span>
+													<span className="text-300">[skype] <span className="text-secondary-2">cleavonsurumo</span></span>
 												</Link>
-												<Link href="#">
+												<Link href="cleavon.ke">
 													<i className="ri-phone-fill" />
-													<span className="text-300">[phone] <span className="text-secondary-2">+1-234-567-8901</span></span>
+													<span className="text-300">[phone] <span className="text-secondary-2">+(254)-746-952861</span></span>
 												</Link>
-												<Link href="#">
+												<Link href="tel:+254746952861">	
 													<i className="ri-mail-fill" />
-													<span className="text-300">[email] <span className="text-secondary-2">contact@james.dev</span></span>
+													<span className="text-300">[email] <span className="text-secondary-2">cleavon@cleavon.ke</span></span>
 												</Link>
 											</div>
 										</div>

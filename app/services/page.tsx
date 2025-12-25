@@ -17,7 +17,7 @@ export default function Services() {
 											My Services
 										</Link>
 										<h3 className="ds-3 mt-3 mb-4 text-dark">
-											Transforming Ideas
+											Transforming Ideas 
 											<span className="text-300">into Intuitive Designs for</span>
 											Engaging User
 											<span className="text-300">Experiences</span>
@@ -216,7 +216,7 @@ export default function Services() {
 									<div className="col-lg-auto col-md-6">
 										<div className="counter-item-cover counter-item">
 											<div className="content text-center mx-auto d-flex align-items-center">
-												<span className="ds-3 count text-primary-1 fw-medium my-0">+<span className="odometer ds-1 text-dark fw-semibold">12</span></span>
+												<span className="ds-3 count text-primary-1 fw-medium my-0">+<span className="odometer ds-1 text-dark fw-semibold">5</span></span>
 												<div className="text-start ms-2">
 													<p className="fs-5 mb-0 text-300">Year of</p>
 													<p className="fs-5 mb-0 fw-bold">Experience</p>
@@ -227,7 +227,7 @@ export default function Services() {
 									<div className="col-lg-auto col-md-6">
 										<div className="counter-item-cover counter-item">
 											<div className="content text-center mx-auto d-flex align-items-center">
-												<span className="ds-3 count text-primary-1 fw-medium my-0">+<span className="odometer ds-1 text-dark fw-semibold">250</span></span>
+												<span className="ds-3 count text-primary-1 fw-medium my-0">+<span className="odometer ds-1 text-dark fw-semibold">60</span></span>
 												<div className="text-start ms-2">
 													<p className="fs-5 mb-0 text-300">Projects</p>
 													<p className="fs-5 mb-0 fw-bold">Completed</p>
@@ -238,7 +238,7 @@ export default function Services() {
 									<div className="col-lg-auto col-md-6">
 										<div className="counter-item-cover counter-item">
 											<div className="content text-center mx-auto d-flex align-items-center">
-												<span className="ds-3 count text-primary-1 fw-medium my-0">+<span className="odometer ds-1 text-dark fw-semibold">680</span></span>
+												<span className="ds-3 count text-primary-1 fw-medium my-0">+<span className="odometer ds-1 text-dark fw-semibold">10</span></span>
 												<div className="text-start ms-2">
 													<p className="fs-5 mb-0 text-300">Satisfied</p>
 													<p className="fs-5 mb-0 fw-bold">Happy Clients</p>
@@ -249,7 +249,7 @@ export default function Services() {
 									<div className="col-lg-auto col-md-6">
 										<div className="counter-item-cover counter-item">
 											<div className="content text-center mx-auto d-flex align-items-center">
-												<span className="ds-3 count text-primary-1 fw-medium my-0">+<span className="odometer ds-1 text-dark fw-semibold">18</span></span>
+												<span className="ds-3 count text-primary-1 fw-medium my-0">+<span className="odometer ds-1 text-dark fw-semibold">1</span></span>
 												<div className="text-start ms-2">
 													<p className="fs-5 mb-0 text-300">Awards</p>
 													<p className="fs-5 mb-0 fw-bold">Won Received</p>
@@ -278,9 +278,9 @@ export default function Services() {
 										</div>
 										<div className="ps-3">
 											<span className="text-400 fs-5">Phone Number</span>
-											<h6 className="mb-0">+1-234-567-8901</h6>
+											<h6 className="mb-0">+(254)-746-952861</h6>
 										</div>
-										<Link href="/tel:+1-234-567-8901" className="position-absolute top-0 start-0 w-100 h-100" />
+										<Link href="/tel:+(254)-746-952861" className="position-absolute top-0 start-0 w-100 h-100" />
 									</div>
 									<div className="d-flex align-items-center mb-4 position-relative d-inline-flex">
 										<div className="bg-white icon-flip position-relative icon-shape icon-xxl border-linear-2 border-2 rounded-4">
@@ -288,19 +288,19 @@ export default function Services() {
 										</div>
 										<div className="ps-3">
 											<span className="text-400 fs-5">Email</span>
-											<h6 className="mb-0">contact@william.design</h6>
+											<h6 className="mb-0">cleavon@cleavon.ke</h6>
 										</div>
-										<Link href="/mailto:someone@example.com" className="position-absolute top-0 start-0 w-100 h-100" />
+										<Link href="/mailto:cleavon@cleavon.ke" className="position-absolute top-0 start-0 w-100 h-100" />
 									</div>
 									<div className="d-flex align-items-center mb-4 position-relative d-inline-flex">
 										<div className="bg-white icon-flip position-relative icon-shape icon-xxl border-linear-2 border-2 rounded-4">
 											<i className="ri-skype-fill text-primary-1 fs-26" />
 										</div>
 										<div className="ps-3">
-											<span className="text-400 fs-5">Skype</span>
-											<h6 className="mb-0">WilliamDesignUX</h6>
+											<span className="text-400 fs-5">Teams</span>
+											<h6 className="mb-0">Cleavonsurumo</h6>
 										</div>
-										<Link href="/skype:SKYPENAME?add" className="position-absolute top-0 start-0 w-100 h-100" />
+										<Link href="/skype:cleavonsurumo" className="position-absolute top-0 start-0 w-100 h-100" />
 									</div>
 									<div className="d-flex align-items-center mb-4 position-relative d-inline-flex">
 										<div className="bg-white icon-flip position-relative icon-shape icon-xxl border-linear-2 border-2 rounded-4">
@@ -308,9 +308,9 @@ export default function Services() {
 										</div>
 										<div className="ps-3">
 											<span className="text-400 fs-5">Address</span>
-											<h6 className="mb-0">0811 Erdman Prairie, Joaville CA</h6>
+											<h6 className="mb-0">Embassy House, Nairobi</h6>
 										</div>
-										<Link href="/https://maps.google.com/maps?q=1st+avenue,New+York" className="position-absolute top-0 start-0 w-100 h-100" />
+										<Link href="/https://maps.app.goo.gl/wVhGwnmmkZuScA1aA" className="position-absolute top-0 start-0 w-100 h-100" />
 									</div>
 								</div>
 								<div className="col-lg-7 offset-lg-1 ps-lg-0 pt-5 pt-lg-0">
@@ -355,7 +355,7 @@ export default function Services() {
 						</div>
 						<div className="scroll-move-right position-absolute bottom-0 start-50 translate-middle-x bg-900 overflow-hidden">
 							<div className="wow img-custom-anim-top">
-								<h3 className="stroke fs-280 text-lowercase text-900 mb-0 lh-1">william.design</h3>
+								<h3 className="stroke fs-280 text-lowercase text-900 mb-0 lh-1">Cleavon.dev</h3>
 							</div>
 						</div>
 					</section>
