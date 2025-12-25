@@ -131,15 +131,15 @@ export default function Coporation2() {
 												</div>
 											</div>
 											<div className="d-flex flex-column gap-2">
-												<Link href="#">
+												<Link href="cleavon.ke">
 													<i className="ri-skype-fill" />
 													<span className="text-300">[skype] <span className="text-secondary-2">cleavonsurumo</span></span>
 												</Link>
-												<Link href="cleavon.ke">
+												<Link href="tel:+254746952861">
 													<i className="ri-phone-fill" />
 													<span className="text-300">[phone] <span className="text-secondary-2">+(254)-746-952861</span></span>
 												</Link>
-												<Link href="tel:+254746952861">	
+												<Link href="mailto:cleavon@cleavon.ke">
 													<i className="ri-mail-fill" />
 													<span className="text-300">[email] <span className="text-secondary-2">cleavon@cleavon.ke</span></span>
 												</Link>
