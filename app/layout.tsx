@@ -6,7 +6,7 @@ import "/public/assets/fonts/remixicon/remixicon.css"
 import "/public/assets/css/main.css"
 
 import type { Metadata } from "next"
-import { Urbanist, Playfair_Display, DM_Mono } from "next/font/google"
+import { Urbanist, Playfair_Display } from "next/font/google"
 
 const urbanist = Urbanist({
 	weight: ['300', '400', '500', '600', '700'],
@@ -20,12 +20,7 @@ const playfair_display = Playfair_Display({
 	variable: "--font-playfair",
 	display: 'swap',
 })
-const dmMono = DM_Mono({
-	weight: ['300', '400', '500'],
-	subsets: ['latin'],
-	variable: "--font-dm-Mono",
-	display: 'swap',
-})
+
 export const metadata: Metadata = {
 	title: "Cleavon Surumo",
 	description: "Cleavon - Personal Portfolio",
@@ -43,7 +38,7 @@ export default function RootLayout({
 	children: React.ReactNode
 }>) {
 	return (
-		<html lang="en" data-bs-theme="dark" className={`${dmMono.variable} ${urbanist.variable} ${playfair_display.variable} zelio`}>
+		<html lang="en" data-bs-theme="dark" className={`${urbanist.variable} ${playfair_display.variable} zelio`}>
 			<head>
 				<link rel="icon" href="/assets/imgs/home-page-2/hero-1/profile-pic.png" />
 			</head>
