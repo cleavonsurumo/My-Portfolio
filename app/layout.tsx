@@ -40,6 +40,9 @@ export default function RootLayout({
 	return (
 		<html lang="en" data-bs-theme="dark" className={`${urbanist.variable} ${playfair_display.variable} zelio`}>
 			<head>
+				<link rel="preload" href="/assets/fonts/dmmono-regular-webfont.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
+				<link rel="preload" href="/assets/fonts/dmmono-medium-webfont.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
+				<link rel="preload" href="/assets/fonts/dmmono-mediumitalic-webfont.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
 				<link rel="icon" href="/assets/imgs/home-page-2/hero-1/profile-pic.png" />
 			</head>
 			<body>{children}</body>

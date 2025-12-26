@@ -1,5 +1,40 @@
 @charset "UTF-8";
-@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&display=swap');
+/* Self-hosted DM Mono fonts (moved from public/assets/css/style.css). Replace filenames if needed. */
+@font-face {
+  font-family: 'DM Mono';
+  src: url('/assets/fonts/dmmono-medium-webfont.woff2') format('woff2'),
+     url('/assets/fonts/dmmono-medium-webfont.woff') format('woff');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'DM Mono';
+  src: url('/assets/fonts/dmmono-regular-webfont.woff2') format('woff2'),
+     url('/assets/fonts/dmmono-regular-webfont.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'DM Mono';
+  src: url('/assets/fonts/dmmono-light-webfont.woff2') format('woff2'),
+     url('/assets/fonts/dmmono-light-webfont.woff') format('woff');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'DM Mono';
+  src: url('/assets/fonts/dmmono-mediumitalic-webfont.woff2') format('woff2'),
+     url('/assets/fonts/dmmono-mediumitalic-webfont.woff') format('woff');
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+}
 /*===========
    Theme Name: AliThemes - Bootstrap Dev Starter
    Author : alithemes
