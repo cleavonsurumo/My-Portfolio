@@ -24,7 +24,7 @@ export default function Contact2() {
 			
 			// Handle non-JSON responses
 			const text = await res.text()
-			let json = {}
+			let json: any = {}
 			try {
 				json = text ? JSON.parse(text) : {}
 			} catch {
