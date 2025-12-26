@@ -4,13 +4,16 @@ import { useState } from 'react'
 
 export default function Contact2() {
 	const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle')
-	const [errorMessage, setErrorMessage] = useState<string | null>(null)
+	const [errorMessage, setErrorMessage] = useState<string>('') // Changed from null to empty string
 
 	async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
 		e.preventDefault()
-		setStatus('sending')
-		const form = new FormData(e.currentTarget)
-		const data = Object.fromEntries(form.entries())
+		setStatus('sending');
+		setErrorMessage('');
+
+		const form = e.currentTarget as HTMLFormElement;
+		const formData = new FormData(form);
+		const data = Object.fromEntries(formData.entries());
 
 		try {
 			const res = await fetch('/api/contact', {
@@ -18,14 +21,23 @@ export default function Contact2() {
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify(data),
 			})
-			const json = await res.json().catch(() => ({}))
+			
+			// Handle non-JSON responses
+			const text = await res.text()
+			let json = {}
+			try {
+				json = text ? JSON.parse(text) : {}
+			} catch {
+				json = {}
+			}
+			
 			if (res.ok && (json.success === undefined || json.success !== false)) {
-				setStatus('success')
-				setErrorMessage(null)
-				(e.currentTarget as HTMLFormElement).reset()
+				setStatus('success');
+				setErrorMessage('');
+				form.reset();
 			} else {
-				const msg = json?.message || json?.error || JSON.stringify(json) || 'Unknown error'
-				console.error('Web3Forms error response:', res.status, msg)
+				const msg = json?.message || json?.error || 'Unknown error'
+				console.error('Form error response:', res.status, msg)
 				setErrorMessage(msg)
 				setStatus('error')
 			}
@@ -45,7 +57,7 @@ export default function Contact2() {
 						<div className="col-lg-7 pb-5 pb-lg-0">
 							<div className="position-relative">
 								<div className="position-relative z-2">
-									<h3 className="text-primary-2 mb-3">Let’s connect</h3>
+									<h3 className="text-primary-2 mb-3">Let's connect</h3>
 									<form onSubmit={handleSubmit}>
 										<div className="row g-3">
 											<div className="col-md-6 ">
@@ -61,10 +73,14 @@ export default function Contact2() {
 												<input type="text" className="form-control bg-3 border border-1 rounded-3" id="subject" name="subject" placeholder="Subject" aria-label="subject" />
 											</div>
 											<div className="col-12">
-												<textarea className="form-control bg-3 border border-1 rounded-3" id="message" name="message" placeholder="Message" aria-label="With textarea" defaultValue={""} />
+												<textarea className="form-control bg-3 border border-1 rounded-3" id="message" name="message" placeholder="Message" aria-label="With textarea" required defaultValue={""} />
 											</div>
 											<div className="col-12">
-												<button type="submit" className="btn btn-primary-2 rounded-2">
+												<button 
+													type="submit" 
+													className="btn btn-primary-2 rounded-2"
+													disabled={status === 'sending'}
+												>
 													{status === 'sending' ? 'Sending...' : 'Send Message'}
 													<i className="ri-arrow-right-up-line" />
 												</button>
