@@ -1,9 +1,44 @@
-import Link from 'next/link'
+"use client"
+
+import { useState } from 'react'
 
 export default function Contact2() {
+	const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle')
+	const [errorMessage, setErrorMessage] = useState<string | null>(null)
+
+	async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+		e.preventDefault()
+		setStatus('sending')
+		const form = new FormData(e.currentTarget)
+		const data = Object.fromEntries(form.entries())
+
+		try {
+			const res = await fetch('/api/contact', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify(data),
+			})
+			const json = await res.json().catch(() => ({}))
+			if (res.ok && (json.success === undefined || json.success !== false)) {
+				setStatus('success')
+				setErrorMessage(null)
+				(e.currentTarget as HTMLFormElement).reset()
+			} else {
+				const msg = json?.message || json?.error || JSON.stringify(json) || 'Unknown error'
+				console.error('Web3Forms error response:', res.status, msg)
+				setErrorMessage(msg)
+				setStatus('error')
+			}
+		} catch (err: any) {
+			const msg = err?.message || String(err) || 'Network error'
+			console.error('Submission failed:', msg)
+			setErrorMessage(msg)
+			setStatus('error')
+		}
+	}
+
 	return (
 		<>
-
 			<section id="contact" className="section-contact-2 position-relative pb-60 overflow-hidden">
 				<div className="container position-relative z-1">
 					<div className="row align-items-center">
@@ -11,16 +46,16 @@ export default function Contact2() {
 							<div className="position-relative">
 								<div className="position-relative z-2">
 									<h3 className="text-primary-2 mb-3">Let’s connect</h3>
-									<form action="#">
+									<form onSubmit={handleSubmit}>
 										<div className="row g-3">
 											<div className="col-md-6 ">
-												<input type="text" className="form-control bg-3 border border-1 rounded-3" id="name" name="name" placeholder="Your name" aria-label="username" />
+												<input type="text" className="form-control bg-3 border border-1 rounded-3" id="name" name="name" placeholder="Your name" aria-label="username" required />
 											</div>
 											<div className="col-md-6">
 												<input type="text" className="form-control bg-3 border border-1 rounded-3" id="phone" name="phone" placeholder="Phone" aria-label="phone" />
 											</div>
 											<div className="col-md-6">
-												<input type="text" className="form-control bg-3 border border-1 rounded-3" id="email" name="email" placeholder="Email" aria-label="email" />
+												<input type="email" className="form-control bg-3 border border-1 rounded-3" id="email" name="email" placeholder="Email" aria-label="email" required />
 											</div>
 											<div className="col-md-6">
 												<input type="text" className="form-control bg-3 border border-1 rounded-3" id="subject" name="subject" placeholder="Subject" aria-label="subject" />
@@ -29,12 +64,17 @@ export default function Contact2() {
 												<textarea className="form-control bg-3 border border-1 rounded-3" id="message" name="message" placeholder="Message" aria-label="With textarea" defaultValue={""} />
 											</div>
 											<div className="col-12">
-												<Link 
-        											href="mailto:your-Cleavon@cleavon.ke?subject=Contact From Portfolio&body=Hello, I would like to get in touch with you."
-        											className="btn btn-primary-2 rounded-2">
-        											Send Message
-        											<i className="ri-arrow-right-up-line" />
-    											</Link>
+												<button type="submit" className="btn btn-primary-2 rounded-2">
+													{status === 'sending' ? 'Sending...' : 'Send Message'}
+													<i className="ri-arrow-right-up-line" />
+												</button>
+												{status === 'success' && <div className="mt-3 text-success">Message sent — thank you!</div>}
+												{status === 'error' && (
+													<div className="mt-3 text-danger">
+														Failed to send message. Try again later.
+														{errorMessage && <div className="small mt-1 text-wrap">{errorMessage}</div>}
+													</div>
+												)}
 											</div>
 										</div>
 									</form>
@@ -95,9 +135,6 @@ export default function Contact2() {
 					</div>
 				</div>
 			</section>
-
-
-
 		</>
 	)
 }

@@ -50,7 +50,7 @@ export default function Education2() {
 													<p className="text-300 text-nowrap fw-regular mb-0">2018-2021:</p>
 													<div>
 														<span className="text-primary-2">Mount Kenya University</span>
-														<p className="text-dark">Certification in Information and Communication Technology</p>
+														<p className="text-dark">Bachelors Degree in Information Science (ICT)</p>
 													</div>
 												</div>
 											</li>
