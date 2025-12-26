@@ -35,6 +35,10 @@
   font-style: italic;
   font-display: swap;
 }
+/* Force DM Mono globally (high-specificity). Remove !important later if undesired. */
+html, body, #__next, .zelio {
+  font-family: 'DM Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", monospace !important;
+}
 /*===========
    Theme Name: AliThemes - Bootstrap Dev Starter
    Author : alithemes
