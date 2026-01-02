@@ -1,49 +1,40 @@
 "use client"
 
-import { useState } from 'react'
+import { useState, useRef } from 'react'
+import emailjs from '@emailjs/browser'
 
 export default function Contact2() {
 	const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle')
 	const [errorMessage, setErrorMessage] = useState<string>('') // Changed from null to empty string
 
+	const formRef = useRef<HTMLFormElement | null>(null)
+
 	async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
 		e.preventDefault()
-		setStatus('sending');
-		setErrorMessage('');
+		setStatus('sending')
+		setErrorMessage('')
 
-		const form = e.currentTarget as HTMLFormElement;
-		const formData = new FormData(form);
-		const data = Object.fromEntries(formData.entries());
+		const form = formRef.current || (e.currentTarget as HTMLFormElement)
+
+		const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID
+		const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID
+		const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
+
+		if (!serviceId || !templateId || !publicKey) {
+			setErrorMessage('EmailJS configuration is missing')
+			setStatus('error')
+			console.error('Missing EmailJS env vars: NEXT_PUBLIC_EMAILJS_SERVICE_ID, NEXT_PUBLIC_EMAILJS_TEMPLATE_ID, NEXT_PUBLIC_EMAILJS_PUBLIC_KEY')
+			return
+		}
 
 		try {
-			const res = await fetch('/api/contact', {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify(data),
-			})
-			
-			// Handle non-JSON responses
-			const text = await res.text()
-			let json: any = {}
-			try {
-				json = text ? JSON.parse(text) : {}
-			} catch {
-				json = {}
-			}
-			
-			if (res.ok && (json.success === undefined || json.success !== false)) {
-				setStatus('success');
-				setErrorMessage('');
-				form.reset();
-			} else {
-				const msg = json?.message || json?.error || 'Unknown error'
-				console.error('Form error response:', res.status, msg)
-				setErrorMessage(msg)
-				setStatus('error')
-			}
+			await emailjs.sendForm(serviceId, templateId, form as HTMLFormElement, publicKey)
+			setStatus('success')
+			setErrorMessage('')
+			form.reset()
 		} catch (err: any) {
-			const msg = err?.message || String(err) || 'Network error'
-			console.error('Submission failed:', msg)
+			const msg = err?.text || err?.message || String(err) || 'Email send failed'
+			console.error('EmailJS send error:', err)
 			setErrorMessage(msg)
 			setStatus('error')
 		}
@@ -58,7 +49,7 @@ export default function Contact2() {
 							<div className="position-relative">
 								<div className="position-relative z-2">
 									<h3 className="text-primary-2 mb-3">Let's connect</h3>
-									<form onSubmit={handleSubmit}>
+									<form ref={formRef} onSubmit={handleSubmit}>
 										<div className="row g-3">
 											<div className="col-md-6 ">
 												<input type="text" className="form-control bg-3 border border-1 rounded-3" id="name" name="name" placeholder="Your name" aria-label="username" required />
