@@ -13,14 +13,16 @@ function mask(value: string | null | undefined) {
 }
 
 export async function GET() {
-  const envs: Record<string, string | undefined | null> = {
-    service: process.env.EMAILJS_SERVICE ?? null,
-    template: process.env.EMAILJS_TEMPLATE ?? null,
-    publicKey: process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY ?? null,
+  const envsRaw: Record<string, string | undefined | null> = {
+    EMAILJS_SERVICE: process.env.EMAILJS_SERVICE ?? null,
+    EMAILJS_TEMPLATE: process.env.EMAILJS_TEMPLATE ?? null,
+    NEXT_PUBLIC_EMAILJS_SERVICE_ID: process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID ?? null,
+    NEXT_PUBLIC_EMAILJS_TEMPLATE_ID: process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID ?? null,
+    NEXT_PUBLIC_EMAILJS_PUBLIC_KEY: process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY ?? null,
   }
 
   const report: Record<string, EnvReport> = {}
-  for (const [k, v] of Object.entries(envs)) {
+  for (const [k, v] of Object.entries(envsRaw)) {
     report[k] = { present: !!v, masked: mask(v) }
   }
 
