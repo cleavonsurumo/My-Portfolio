@@ -14,6 +14,12 @@ export default function Contact2() {
 	const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
 
 	useEffect(() => {
+		console.log('EmailJS envs:', {
+			service: serviceId,
+			template: templateId,
+			publicKey,
+		})
+
 		if (publicKey) {
 			try {
 				if (typeof emailjs.init === 'function') emailjs.init(publicKey)
@@ -21,7 +27,7 @@ export default function Contact2() {
 				console.warn('EmailJS init warning:', e)
 			}
 		}
-	}, [publicKey])
+	}, [publicKey, serviceId, templateId])
 
 	async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
 		e.preventDefault()
@@ -156,6 +162,5 @@ export default function Contact2() {
 					</div>
 				</div>
 			</section>
-		</>
-	)
-}
+		)
+	}
