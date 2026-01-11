@@ -14,7 +14,7 @@ export default function Contact2() {
   const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
 
   useEffect(() => {
-    console.log('EmailJS envs:', { service: serviceId, template: templateId, publicKey })
+    console.log('EmailJS envs:', JSON.stringify({ service: serviceId, template: templateId, publicKey }, null, 2))
 
     if (publicKey) {
       try {
