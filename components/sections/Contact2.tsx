@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from 'react'
 import emailjs from '@emailjs/browser'
 
 export default function Contact2() {
-	const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle')
+	const [status, setStatus] = useState('idle')
 	const [errorMessage, setErrorMessage] = useState<string>('') // Changed from null to empty string
 
 	const formRef = useRef<HTMLFormElement | null>(null)
