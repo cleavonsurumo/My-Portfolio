@@ -6,23 +6,17 @@ export async function POST(request: Request) {
     const emailjsServerKey = process.env.EMAILJS_SERVER_KEY
     const web3formsKey = process.env.WEB3FORMS_API_KEY
 
-    // If EMAILJS_SERVER_KEY is set, proxy the request to EmailJS server REST API
-    if (emailjsServerKey) {
-      const service_id = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID || process.env.EMAILJS_SERVICE || ''
-      const template_id = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID || process.env.EMAILJS_TEMPLATE || ''
-      const user_id = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY || process.env.EMAILJS_PUBLIC_KEY || ''
+    // Prefer direct EmailJS call when service/template/user IDs are available
+    const service_id = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID || process.env.EMAILJS_SERVICE || ''
+    const template_id = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID || process.env.EMAILJS_TEMPLATE || ''
+    const user_id = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY || process.env.EMAILJS_PUBLIC_KEY || ''
 
-      if (!service_id || !template_id) {
-        console.error('Missing EmailJS service/template configuration')
-        return NextResponse.json({ success: false, message: 'Missing EmailJS configuration' }, { status: 500 })
-      }
-
+    if (service_id && template_id && user_id) {
       const payload = {
         service_id,
         template_id,
         user_id,
         template_params: body || {},
-        accessToken: emailjsServerKey,
       }
 
       const res = await fetch('https://api.emailjs.com/api/v1.0/email/send', {
