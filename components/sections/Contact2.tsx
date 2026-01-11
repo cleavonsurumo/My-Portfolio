@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import emailjs from '@emailjs/browser'
 
 export default function Contact2() {
@@ -8,6 +8,20 @@ export default function Contact2() {
 	const [errorMessage, setErrorMessage] = useState<string>('') // Changed from null to empty string
 
 	const formRef = useRef<HTMLFormElement | null>(null)
+
+	const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID
+	const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID
+	const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
+
+	useEffect(() => {
+		if (publicKey) {
+			try {
+				if (typeof emailjs.init === 'function') emailjs.init(publicKey)
+			} catch (e) {
+				console.warn('EmailJS init warning:', e)
+			}
+		}
+	}, [publicKey])
 
 	async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
 		e.preventDefault()
