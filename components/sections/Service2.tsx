@@ -19,6 +19,7 @@ export default function Service2() {
 									</div>
 									<h3>
 										Designing solutions
+										
 										<span className="text-300">
 											customized<br />
 											to meet your requirements
