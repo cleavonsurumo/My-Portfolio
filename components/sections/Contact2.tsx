@@ -1,7 +1,6 @@
 "use client"
 
-import { useState, useRef, useEffect } from 'react'
-import emailjs from '@emailjs/browser'
+import { useState, useRef } from 'react'
 
 export default function Contact2() {
   const [status, setStatus] = useState('idle')
@@ -9,21 +8,7 @@ export default function Contact2() {
 
   const formRef = useRef<HTMLFormElement | null>(null)
 
-  const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID
-  const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID
-  const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
-
-  useEffect(() => {
-    console.log('EmailJS envs:', JSON.stringify({ service: serviceId, template: templateId, publicKey }, null, 2))
-
-    if (publicKey) {
-      try {
-        if (typeof emailjs.init === 'function') emailjs.init(publicKey)
-      } catch (e) {
-        console.warn('EmailJS init warning:', e)
-      }
-    }
-  }, [publicKey, serviceId, templateId])
+  // Using server-side send endpoint at `/api/contact` so client doesn't rely on build-time env
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -32,26 +17,35 @@ export default function Contact2() {
 
     const form = formRef.current || (e.currentTarget as HTMLFormElement)
 
-    const sId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID
-    const tId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID
-    const pKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
-
-    if (!sId || !tId || !pKey) {
-      setErrorMessage('EmailJS configuration is missing')
-      setStatus('error')
-      console.error('Missing EmailJS env vars: NEXT_PUBLIC_EMAILJS_SERVICE_ID, NEXT_PUBLIC_EMAILJS_TEMPLATE_ID, NEXT_PUBLIC_EMAILJS_PUBLIC_KEY')
-      return
+    const data = {
+      name: (form.querySelector('input[name="name"]') as HTMLInputElement)?.value,
+      email: (form.querySelector('input[name="email"]') as HTMLInputElement)?.value,
+      phone: (form.querySelector('input[name="phone"]') as HTMLInputElement)?.value,
+      subject: (form.querySelector('input[name="subject"]') as HTMLInputElement)?.value,
+      message: (form.querySelector('textarea[name="message"]') as HTMLTextAreaElement)?.value,
     }
 
     try {
-      await emailjs.sendForm(sId, tId, form as HTMLFormElement, pKey)
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      })
+
+      const json = await res.json()
+      if (!res.ok || !json.ok) {
+        console.error('Server send error:', json)
+        setErrorMessage(json?.error || 'Server email send failed')
+        setStatus('error')
+        return
+      }
+
       setStatus('success')
       setErrorMessage('')
       form.reset()
     } catch (err: any) {
-      const msg = err?.text || err?.message || String(err) || 'Email send failed'
-      console.error('EmailJS send error:', err)
-      setErrorMessage(msg)
+      console.error('Send error:', err)
+      setErrorMessage(String(err?.message ?? err))
       setStatus('error')
     }
   }

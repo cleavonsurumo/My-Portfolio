@@ -1,3 +1,54 @@
+import { NextResponse } from 'next/server'
+
+type Body = {
+  name?: string
+  email?: string
+  phone?: string
+  subject?: string
+  message?: string
+}
+
+export async function POST(req: Request) {
+  try {
+    const body: Body = await req.json()
+
+    const service_id = process.env.EMAILJS_SERVICE ?? process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID
+    const template_id = process.env.EMAILJS_TEMPLATE ?? process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID
+    const user_id = process.env.EMAILJS_PUBLIC_KEY ?? process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
+
+    if (!service_id || !template_id || !user_id) {
+      return NextResponse.json({ ok: false, error: 'Missing EmailJS server configuration' }, { status: 500 })
+    }
+
+    const payload = {
+      service_id,
+      template_id,
+      user_id,
+      template_params: {
+        name: body.name ?? '',
+        email: body.email ?? '',
+        phone: body.phone ?? '',
+        subject: body.subject ?? '',
+        message: body.message ?? '',
+      },
+    }
+
+    const res = await fetch('https://api.emailjs.com/api/v1.0/email/send', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    })
+
+    if (!res.ok) {
+      const text = await res.text()
+      return NextResponse.json({ ok: false, error: text || 'EmailJS API error' }, { status: res.status })
+    }
+
+    return NextResponse.json({ ok: true })
+  } catch (err: any) {
+    return NextResponse.json({ ok: false, error: String(err?.message ?? err) }, { status: 500 })
+  }
+}
 import { NextResponse } from 'next/server';
 
 export async function POST(request: Request) {
