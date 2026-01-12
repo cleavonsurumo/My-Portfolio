@@ -560,17 +560,7 @@ img {
   animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
 }
 
-/* Disable typewriter animation on small screens to prevent vertical stacking */
-@media screen and (max-width: 767.98px) {
-  .typewriter h1 {
-    animation: none !important;
-    overflow: visible !important;
-    border-right: none !important;
-    white-space: normal !important;
-    letter-spacing: normal !important;
-    width: auto !important;
-  }
-}
+/* Typewriter animation enabled on all screen sizes */
 
 /* The typing effect: reveal horizontally using clip-path to avoid wrapping */
 @keyframes typing {
