@@ -55,6 +55,12 @@ label, input, button, textarea, select, small, strong, em, b, i, u {
 .feather, .feather * {
   font-family: 'Feather' !important;
 }
+/* Logo variants for theme switching */
+[data-bs-theme="dark"] .logo-dark { display: inline-block !important }
+[data-bs-theme="dark"] .logo-light { display: none !important }
+[data-bs-theme="light"] .logo-dark { display: none !important }
+[data-bs-theme="light"] .logo-light { display: inline-block !important }
+
 /*===========
    Theme Name: AliThemes - Bootstrap Dev Starter
    Author : alithemes

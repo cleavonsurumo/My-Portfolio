@@ -28,7 +28,7 @@ export default function ThemeSwitch() {
 				onClick={toggleTheme}
 				style={{ cursor: "pointer" }}
 			>
-				<i className={`bi theme-icon ${theme === "dark" ? "ri-sun-line text-warning" : "ri-contrast-2-line text-white"}`} />
+				<i className={`${theme === "dark" ? "ri-sun-line text-warning fs-18" : "ri-contrast-2-line text-white fs-18"} theme-icon`} aria-hidden="true" />
 			</div>
 
 			

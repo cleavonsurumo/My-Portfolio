@@ -1,4 +1,5 @@
 import ThemeSwitch from '@/components/elements/ThemeSwitch'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import Menu from '../Menu'
 import MobileMenu from '../MobileMenu'
@@ -14,7 +15,8 @@ export default function Header1({ scroll, isMobileMenu, handleMobileMenu, isOffC
 					</Link>
 					<div className="container py-3 px-0">
 						<Link className="navbar-brand d-flex main-logo align-items-center ms-lg-0 ms-md-5 ms-3" href="/">
-							<img src="/assets/imgs/template/favicon.svg" alt="infinia" />
+							<img className="logo-dark" src="/assets/imgs/template/favicon.svg" alt="infinia" />
+							<img className="logo-light d-none" src="/assets/imgs/template/favicon-light.svg" alt="infinia" />
 							<span className="fs-4 ms-2">william.design</span>
 						</Link>
 						<div className="d-none d-lg-flex">

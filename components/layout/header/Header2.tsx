@@ -62,6 +62,7 @@ export default function Header2({ scroll, isMobileMenu, handleMobileMenu,isOffCa
 										<span className="burger-icon-mid" />
 										<span className="burger-icon-bottom" />
 									</div>
+                                    
 								</div>
 							</div>
 							<ThemeSwitch />
