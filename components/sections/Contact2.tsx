@@ -110,7 +110,7 @@ export default function Contact2() {
                   <span className="text-400 fs-6">Phone Number</span>
                   <h6 className="mb-0">+(254)-746-952861</h6>
                 </div>
-                <a href="tel:+(254)-746-952861" className="position-absolute top-0 start-0 w-100 h-100" />
+                <a href="tel:+(254)-746-952861" target="_blank" rel="noopener noreferrer" className="position-absolute top-0 start-0 w-100 h-100" />
               </div>
               <div className="d-flex align-items-center mb-3 position-relative d-inline-flex">
                 <div className="d-inline-block">
@@ -122,7 +122,7 @@ export default function Contact2() {
                   <span className="text-400 fs-6">Email</span>
                   <h6 className="mb-0">Cleavon@cleavon.ke</h6>
                 </div>
-                <a href="mailto:Cleavon@cleavon.ke" className="position-absolute top-0 start-0 w-100 h-100" />
+                <a href="mailto:Cleavon@cleavon.ke" target="_blank" rel="noopener noreferrer" className="position-absolute top-0 start-0 w-100 h-100" />
               </div>
               <div className="d-flex align-items-center mb-3 position-relative d-inline-flex">
                 <div className="d-inline-block">
@@ -134,7 +134,7 @@ export default function Contact2() {
                   <span className="text-400 fs-6">Teams</span>
                   <h6 className="mb-0">cleavonsurumo</h6>
                 </div>
-                <a href="https://teams.live.com/v2" className="position-absolute top-0 start-0 w-100 h-100" />
+                <a href="https://teams.live.com/v2" target="_blank" rel="noopener noreferrer" className="position-absolute top-0 start-0 w-100 h-100" />
               </div>
               <div className="d-flex align-items-center mb-3 position-relative d-inline-flex">
                 <div className="d-inline-block">
@@ -146,7 +146,7 @@ export default function Contact2() {
                   <span className="text-400 fs-6">Address</span>
                   <h6 className="mb-0">Embassy House, Nairobi</h6>
                 </div>
-                <a href="https://maps.app.goo.gl/bo6f38HguGvkdwJZ8" className="position-absolute top-0 start-0 w-100 h-100" />
+                <a href="https://maps.app.goo.gl/bo6f38HguGvkdwJZ8" target="_blank" rel="noopener noreferrer" className="position-absolute top-0 start-0 w-100 h-100" />
               </div>
             </div>
           </div>
