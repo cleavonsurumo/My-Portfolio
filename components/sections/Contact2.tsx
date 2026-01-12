@@ -134,7 +134,7 @@ export default function Contact2() {
                   <span className="text-400 fs-6">Teams</span>
                   <h6 className="mb-0">cleavonsurumo</h6>
                 </div>
-                <a href="teams.live.com/v2" className="position-absolute top-0 start-0 w-100 h-100" />
+                <a href="https://teams.live.com/v2" className="position-absolute top-0 start-0 w-100 h-100" />
               </div>
               <div className="d-flex align-items-center mb-3 position-relative d-inline-flex">
                 <div className="d-inline-block">
