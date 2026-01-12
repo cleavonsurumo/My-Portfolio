@@ -1,54 +1,133 @@
 "use client"
 
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
+import emailjs from '@emailjs/browser'
 
 export default function Contact2() {
   const [status, setStatus] = useState('idle')
   const [errorMessage, setErrorMessage] = useState('')
 
   const formRef = useRef<HTMLFormElement | null>(null)
+  const [recaptchaLoaded, setRecaptchaLoaded] = useState(false)
 
   // Using server-side send endpoint at `/api/contact` so client doesn't rely on build-time env
+    useEffect(() => {
+      const siteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || ''
+      if (!siteKey) return
+
+      // Dynamically load reCAPTCHA v3
+      const id = 'recaptcha-v3'
+      if (document.getElementById(id)) {
+        setRecaptchaLoaded(true)
+        return
+      }
+      const s = document.createElement('script')
+      s.src = `https://www.google.com/recaptcha/api.js?render=${siteKey}`
+      s.async = true
+      s.defer = true
+      s.id = id
+      s.onload = () => setRecaptchaLoaded(true)
+      s.onerror = () => setRecaptchaLoaded(false)
+      document.head.appendChild(s)
+      return () => { s.remove() }
+    }, [])
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     setStatus('sending')
     setErrorMessage('')
-
     const form = formRef.current || (e.currentTarget as HTMLFormElement)
+    // Honeypot check
+    const hp = (form.querySelector('input[name="hp"]') as HTMLInputElement | null)?.value
+    if (hp && hp.trim() !== '') {
+      setErrorMessage('Spam detected')
+      setStatus('error')
+      return
+    }
 
-    const data = {
-      name: (form.querySelector('input[name="name"]') as HTMLInputElement)?.value,
-      email: (form.querySelector('input[name="email"]') as HTMLInputElement)?.value,
+    const data: any = {
+      from_name: (form.querySelector('input[name="name"]') as HTMLInputElement)?.value,
+      from_email: (form.querySelector('input[name="email"]') as HTMLInputElement)?.value,
       phone: (form.querySelector('input[name="phone"]') as HTMLInputElement)?.value,
       subject: (form.querySelector('input[name="subject"]') as HTMLInputElement)?.value,
       message: (form.querySelector('textarea[name="message"]') as HTMLTextAreaElement)?.value,
     }
 
-    try {
-      const res = await fetch('/api/contact', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
-      })
+    // If reCAPTCHA v3 site key provided, execute and attach token
+    const recaptchaSiteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || ''
+    if (recaptchaSiteKey) {
+      if (!(window as any).grecaptcha || !recaptchaLoaded) {
+        setErrorMessage('reCAPTCHA not loaded; please refresh the page')
+        setStatus('error')
+        return
+      }
+      try {
+        const token = await new Promise<string>((resolve, reject) => {
+          try {
+            ;(window as any).grecaptcha.ready(() => {
+              ;(window as any).grecaptcha.execute(recaptchaSiteKey, { action: 'contact' })
+                .then((t: string) => resolve(t))
+                .catch((e: any) => reject(e))
+            })
+          } catch (e) { reject(e) }
+        })
+        console.debug('reCAPTCHA token:', token)
+        if (token) {
+          // Attach token under several common names to satisfy different template expectations
+          data['g-recaptcha-response'] = token
+          data['recaptcha'] = token
+          data['recaptcha_token'] = token
+        } else {
+          setErrorMessage('reCAPTCHA failed to return a token')
+          setStatus('error')
+          return
+        }
+      } catch (recapErr: any) {
+        console.error('reCAPTCHA execution error:', recapErr)
+        setErrorMessage('reCAPTCHA execution failed')
+        setStatus('error')
+        return
+      }
+    }
 
-      const json = await res.json()
-      if (!res.ok || !json.ok) {
-        console.error('Server send error:', json)
-        setErrorMessage(json?.error || 'Server email send failed')
+    try {
+      const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID || ''
+      const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID || ''
+      const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY || ''
+
+      if (!serviceId || !templateId || !publicKey) {
+        setErrorMessage('EmailJS public keys are not configured')
         setStatus('error')
         return
       }
 
-      setStatus('success')
-      setErrorMessage('')
-      form.reset()
+      // Send via EmailJS client SDK
+      const result = await emailjs.send(serviceId, templateId, data, publicKey)
+      // emailjs returns an array-like response; treat 200-range as success
+      if ((result as any)?.status && (result as any).status >= 200 && (result as any).status < 300) {
+        setStatus('success')
+        setErrorMessage('')
+        form.reset()
+        return
+      }
+
+      console.error('EmailJS send unexpected response:', result)
+      setErrorMessage('EmailJS send failed')
+      setStatus('error')
     } catch (err: any) {
-      console.error('Send error:', err)
-      setErrorMessage(String(err?.message ?? err))
+      console.error('EmailJS send error:', err)
+        const txt = err?.text || err?.message || String(err)
+        // Map common provider guidance to actionable message
+        if (typeof txt === 'string' && txt.includes('honeypot') || typeof txt === 'string' && txt.includes('reduce spam')) {
+          setErrorMessage('Provider rejected the message — ensure honeypot is empty or reduce spam content')
+        } else {
+          setErrorMessage(txt)
+        }
       setStatus('error')
     }
   }
+
+  
 
   return (
     <>
@@ -60,6 +139,8 @@ export default function Contact2() {
                 <div className="position-relative z-2">
                   <h3 className="text-primary-2 mb-3">Let's connect</h3>
                   <form ref={formRef} onSubmit={handleSubmit}>
+                    {/* Honeypot field for spam bots (should remain empty) */}
+                    <input type="text" name="hp" autoComplete="off" tabIndex={-1} style={{display: 'none'}} />
                     <div className="row g-3">
                       <div className="col-md-6 ">
                         <input type="text" className="form-control bg-3 border border-1 rounded-3" id="name" name="name" placeholder="Your name" aria-label="username" required />

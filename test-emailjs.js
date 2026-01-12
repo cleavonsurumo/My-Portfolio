@@ -15,6 +15,7 @@ const env = fs.readFileSync(envPath, 'utf8').split(/\r?\n/).reduce((acc, line) =
 const service_id = env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
 const template_id = env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID;
 const user_id = env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
+const server_key = env.EMAILJS_SERVER_KEY || env.EMAILJS_SERVER_PRIVATE_KEY || env.EMAILJS_SERVER;
 
 if (!service_id || !template_id || !user_id) {
   console.error('Missing EmailJS keys in .env.local');
@@ -32,6 +33,11 @@ const payload = {
     reply_to: 'test@example.com'
   }
 };
+
+if (server_key) {
+  payload.accessToken = server_key;
+  console.log('Using server key from .env.local');
+}
 
 ;(async () => {
   try {

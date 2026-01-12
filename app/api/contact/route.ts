@@ -4,88 +4,49 @@ export async function POST(request: Request) {
   try {
     const body = await request.json()
     const emailjsServerKey = process.env.EMAILJS_SERVER_KEY
-    const web3formsKey = process.env.WEB3FORMS_API_KEY
 
-    // Prefer direct EmailJS call when service/template/user IDs are available
+    // Use EmailJS when service/template/user IDs are available
     const service_id = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID || process.env.EMAILJS_SERVICE || ''
     const template_id = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID || process.env.EMAILJS_TEMPLATE || ''
     const user_id = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY || process.env.EMAILJS_PUBLIC_KEY || ''
 
-    if (service_id && template_id && user_id) {
-      const payload = {
-        service_id,
-        template_id,
-        user_id,
-        template_params: body || {},
-      }
-
-      const res = await fetch('https://api.emailjs.com/api/v1.0/email/send', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-          'User-Agent': 'Next.js API Route (server)'
-        },
-        body: JSON.stringify(payload),
-      })
-
-      const text = await res.text()
-      const ctype = res.headers.get('content-type') || ''
-      if (ctype.includes('application/json')) {
-        const data = JSON.parse(text || '{}')
-        return NextResponse.json(data, { status: res.ok ? 200 : 502 })
-      }
-
-      return NextResponse.json({ success: res.ok, message: text }, { status: res.ok ? 200 : 502 })
+    if (!service_id || !template_id || !user_id) {
+      console.error('EmailJS credentials are missing')
+      return NextResponse.json({ ok: false, success: false, message: 'Missing EmailJS keys' }, { status: 400 })
     }
 
-    // Fallback to Web3Forms if EMAILJS_SERVER_KEY is not present
-    if (!web3formsKey) {
-      console.error('WEB3FORMS_API_KEY is not set')
-      return NextResponse.json({ success: false, message: 'Missing API key' }, { status: 500 })
+    const payload: any = {
+      service_id,
+      template_id,
+      user_id,
+      template_params: body || {},
     }
 
-    // Build multipart/form-data payload expected by Web3Forms
-    const form = new FormData()
-    for (const [k, v] of Object.entries(body || {})) {
-      form.append(k, typeof v === 'string' ? v : JSON.stringify(v))
+    // If a server/private EmailJS key is provided, include it as accessToken
+    if (emailjsServerKey) {
+      payload.accessToken = emailjsServerKey
     }
-    form.append('access_key', web3formsKey)
 
-    const incomingOrigin = request.headers.get('origin') || request.headers.get('referer') || ''
-    const incomingLang = request.headers.get('accept-language') || ''
-
-    const res = await fetch('https://api.web3forms.com/submit', {
+    const res = await fetch('https://api.emailjs.com/api/v1.0/email/send', {
       method: 'POST',
-      // Let fetch set Content-Type with boundary for FormData
       headers: {
-        Accept: 'application/json, text/plain, */*',
-        'User-Agent': 'Next.js API Route (server)',
-        Referer: incomingOrigin,
-        Origin: incomingOrigin,
-        'Accept-Language': incomingLang,
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        'User-Agent': 'Next.js API Route (server)'
       },
-      body: form as any,
+      body: JSON.stringify(payload),
     })
 
-    const contentType = res.headers.get('content-type') || ''
-    if (contentType.includes('application/json')) {
-      const data = await res.json()
-      return NextResponse.json(data, { status: res.ok ? 200 : 502 })
-    }
-
     const text = await res.text()
-    const looksLikeHtml = contentType.includes('text/html') || /^\s*<!DOCTYPE html>/i.test(text) || /Enable JavaScript and cookies to continue/i.test(text) || /Just a moment/i.test(text)
-    if (looksLikeHtml) {
-      console.error('Upstream returned HTML (possible anti-bot):', res.status)
-      console.error('Upstream HTML (truncated):', text.slice(0, 2000))
-      return NextResponse.json({ success: false, message: 'Upstream blocked the request', statusCode: res.status, details: text.slice(0, 2000) }, { status: 502 })
+    const ctype = res.headers.get('content-type') || ''
+    if (ctype.includes('application/json')) {
+      const data = JSON.parse(text || '{}')
+      return NextResponse.json({ ok: res.ok, success: res.ok, data }, { status: res.ok ? 200 : 502 })
     }
 
-    console.error('Web3Forms returned non-JSON response:', res.status, text.slice(0, 2000))
-    return NextResponse.json({ success: false, message: 'Upstream returned non-JSON', details: text.slice(0, 2000) }, { status: 502 })
+    return NextResponse.json({ ok: res.ok, success: res.ok, message: text }, { status: res.ok ? 200 : 502 })
   } catch (err: any) {
     console.error('Contact API error:', err)
-    return NextResponse.json({ success: false, message: err?.message || 'Internal server error' }, { status: 500 })
+    return NextResponse.json({ ok: false, success: false, message: err?.message || 'Internal server error' }, { status: 500 })
   }
 }
