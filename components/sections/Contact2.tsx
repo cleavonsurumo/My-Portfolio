@@ -4,6 +4,16 @@ import { useState, useRef, useEffect } from 'react'
 import emailjs from '@emailjs/browser'
 
 export default function Contact2() {
+  useEffect(() => {
+    if (process.env.NODE_ENV === 'development') {
+      console.debug('ENV CHECK:', {
+        NEXT_PUBLIC_EMAILJS_SERVICE_ID: process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID,
+        NEXT_PUBLIC_EMAILJS_TEMPLATE_ID: process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID,
+        NEXT_PUBLIC_EMAILJS_PUBLIC_KEY: process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY,
+        NEXT_PUBLIC_RECAPTCHA_SITE_KEY: process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY,
+      })
+    }
+  }, [])
   const [status, setStatus] = useState('idle')
   const [errorMessage, setErrorMessage] = useState('')
 
