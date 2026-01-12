@@ -974,7 +974,7 @@ img {
   visibility: hidden;
   transform: translateY(0.75rem);
   transition: all 0.2s linear, margin-right 0s;
-  background-color: #6e4ef2;
+  background-color: #A0F34F;
 }
 .btn-scroll-top:after {
   position: absolute;
@@ -1006,7 +1006,7 @@ img {
   fill: none;
 }
 .btn-scroll-top svg.progress-square path {
-  stroke: #1f1f24;
+  stroke: #0a0a0a;
   stroke-width: 1;
   box-sizing: border-box;
   transition: all 0.2s linear;
