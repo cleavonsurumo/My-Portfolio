@@ -552,6 +552,7 @@ img {
   overflow: hidden; /* Ensures the content is not revealed until the animation */
   border-right: 0.15em solid orange; /* The typwriter cursor */
   white-space: nowrap; /* Keeps the content on a single line */
+  display: inline-block;
   margin-top: 0;
   margin-bottom: 0;
   margin-right: auto;
@@ -559,13 +560,27 @@ img {
   animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
 }
 
-/* The typing effect */
+/* Disable typewriter animation on small screens to prevent vertical stacking */
+@media screen and (max-width: 767.98px) {
+  .typewriter h1 {
+    animation: none !important;
+    overflow: visible !important;
+    border-right: none !important;
+    white-space: normal !important;
+    letter-spacing: normal !important;
+    width: auto !important;
+  }
+}
+
+/* The typing effect: reveal horizontally using clip-path to avoid wrapping */
 @keyframes typing {
   from {
-    width: 0;
+    -webkit-clip-path: inset(0 100% 0 0);
+            clip-path: inset(0 100% 0 0);
   }
   to {
-    width: 100%;
+    -webkit-clip-path: inset(0 0 0 0);
+            clip-path: inset(0 0 0 0);
   }
 }
 /* The typewriter cursor effect */
