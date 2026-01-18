@@ -7,6 +7,7 @@ import "/public/assets/css/main.css"
 
 import type { Metadata } from "next"
 import { Urbanist, Playfair_Display } from "next/font/google"
+import Preloader from "../components/elements/Preloader"
 
 const urbanist = Urbanist({
 	weight: ['300', '400', '500', '600', '700'],
@@ -45,7 +46,17 @@ export default function RootLayout({
 				<link rel="preload" href="/assets/fonts/dmmono-mediumitalic-webfont.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
 				<link rel="icon" href="/assets/imgs/home-page-2/template/favicon.svg" />
 			</head>
-			<body>{children}</body>
+			<body>
+				<div id="preloader">
+					<div className="loader-cover">
+						<div className="loader-container" id="preloader-root">
+							{/* client script will mount the animation into #preloader-root */}
+						</div>
+					</div>
+				</div>
+				<Preloader />
+				{children}
+			</body>
 		</html>
 	)
 }
