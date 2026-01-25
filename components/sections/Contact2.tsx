@@ -16,31 +16,57 @@ export default function Contact2() {
   }, [])
   const [status, setStatus] = useState('idle')
   const [errorMessage, setErrorMessage] = useState('')
+  const [recaptchaLoaded, setRecaptchaLoaded] = useState(false)
+  const recaptchaWidgetIdRef = useRef<number | null>(null)
 
   const formRef = useRef<HTMLFormElement | null>(null)
-  const [recaptchaLoaded, setRecaptchaLoaded] = useState(false)
 
-  // Using server-side send endpoint at `/api/contact` so client doesn't rely on build-time env
-    useEffect(() => {
-      const siteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || ''
-      if (!siteKey) return
+  // Load reCAPTCHA v2 invisible script
+  useEffect(() => {
+    const siteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || ''
+    if (!siteKey) {
+      setRecaptchaLoaded(true) // No reCAPTCHA needed
+      return
+    }
 
-      // Dynamically load reCAPTCHA v3
-      const id = 'recaptcha-v3'
-      if (document.getElementById(id)) {
+    const id = 'recaptcha-v2'
+    if (document.getElementById(id)) {
+      setRecaptchaLoaded(true)
+      return
+    }
+
+    const script = document.createElement('script')
+    script.src = `https://www.google.com/recaptcha/api.js?onload=onRecaptchaLoad&render=explicit`
+    script.async = true
+    script.defer = true
+    script.id = id
+    
+    // Global callback when reCAPTCHA loads
+    ;(window as any).onRecaptchaLoad = () => {
+      const container = document.getElementById('recaptcha-container')
+      if (container && !(window as any).grecaptcha) return
+      
+      try {
+        if ((window as any).grecaptcha && !recaptchaWidgetIdRef.current) {
+          recaptchaWidgetIdRef.current = (window as any).grecaptcha.render('recaptcha-container', {
+            sitekey: siteKey,
+            size: 'invisible',
+          })
+        }
         setRecaptchaLoaded(true)
-        return
+        console.debug('reCAPTCHA v2 invisible loaded')
+      } catch (err) {
+        console.error('reCAPTCHA render error:', err)
       }
-      const s = document.createElement('script')
-      s.src = `https://www.google.com/recaptcha/api.js?render=${siteKey}`
-      s.async = true
-      s.defer = true
-      s.id = id
-      s.onload = () => setRecaptchaLoaded(true)
-      s.onerror = () => setRecaptchaLoaded(false)
-      document.head.appendChild(s)
-      return () => { s.remove() }
-    }, [])
+    }
+    
+    document.head.appendChild(script)
+
+    return () => {
+      script.remove()
+      delete (window as any).onRecaptchaLoad
+    }
+  }, [])
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -63,7 +89,7 @@ export default function Contact2() {
       message: (form.querySelector('textarea[name="message"]') as HTMLTextAreaElement)?.value,
     }
 
-    // If reCAPTCHA v3 site key provided, execute and attach token
+    // reCAPTCHA v2 invisible execution
     const recaptchaSiteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || ''
     if (recaptchaSiteKey) {
       if (!(window as any).grecaptcha || !recaptchaLoaded) {
@@ -71,30 +97,51 @@ export default function Contact2() {
         setStatus('error')
         return
       }
+
       try {
+        // Execute invisible reCAPTCHA and wait for token
         const token = await new Promise<string>((resolve, reject) => {
-          try {
-            ;(window as any).grecaptcha.ready(() => {
-              ;(window as any).grecaptcha.execute(recaptchaSiteKey, { action: 'contact' })
-                .then((t: string) => resolve(t))
-                .catch((e: any) => reject(e))
-            })
-          } catch (e) { reject(e) }
+          const widgetId = recaptchaWidgetIdRef.current
+          if (widgetId === null) {
+            reject(new Error('reCAPTCHA widget not initialized'))
+            return
+          }
+
+          // Set callback for when token is received
+          ;(window as any).grecaptcha.ready(() => {
+            try {
+              ;(window as any).grecaptcha.execute(widgetId)
+              
+              // Poll for the response token
+              const checkToken = setInterval(() => {
+                const response = (window as any).grecaptcha.getResponse(widgetId)
+                if (response) {
+                  clearInterval(checkToken)
+                  resolve(response)
+                }
+              }, 100)
+
+              // Timeout after 30 seconds
+              setTimeout(() => {
+                clearInterval(checkToken)
+                reject(new Error('reCAPTCHA timeout'))
+              }, 30000)
+            } catch (e) {
+              reject(e)
+            }
+          })
         })
-        console.debug('reCAPTCHA token:', token)
-        if (token) {
-          // Attach token under several common names to satisfy different template expectations
-          data['g-recaptcha-response'] = token
-          data['recaptcha'] = token
-          data['recaptcha_token'] = token
-        } else {
-          setErrorMessage('reCAPTCHA failed to return a token')
-          setStatus('error')
-          return
+
+        console.debug('reCAPTCHA token received')
+        data['g-recaptcha-response'] = token
+        
+        // Reset reCAPTCHA for next submission
+        if (recaptchaWidgetIdRef.current !== null) {
+          ;(window as any).grecaptcha.reset(recaptchaWidgetIdRef.current)
         }
       } catch (recapErr: any) {
         console.error('reCAPTCHA execution error:', recapErr)
-        setErrorMessage('reCAPTCHA execution failed')
+        setErrorMessage('reCAPTCHA verification failed')
         setStatus('error')
         return
       }
@@ -151,6 +198,8 @@ export default function Contact2() {
                   <form ref={formRef} onSubmit={handleSubmit}>
                     {/* Honeypot field for spam bots (should remain empty) */}
                     <input type="text" name="hp" autoComplete="off" tabIndex={-1} style={{display: 'none'}} />
+                    {/* reCAPTCHA v2 invisible container */}
+                    <div id="recaptcha-container"></div>
                     <div className="row g-3">
                       <div className="col-md-6 ">
                         <input type="text" className="form-control bg-3 border border-1 rounded-3" id="name" name="name" placeholder="Your name" aria-label="username" required />
