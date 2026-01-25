@@ -25,9 +25,9 @@ export const metadata: Metadata = {
 	title: "Cleavon Surumo",
 	description: "Cleavon - Personal Portfolio",
 	icons: {
-			icon: '/assets/imgs/home-page-2/template/favicon.svg',
-			shortcut: '/assets/imgs/home-page-2/template/favicon.svg',
-			apple: '/assets/imgs/home-page-2/template/favicon.svg',
+			icon: '/assets/imgs/home-page-2/hero-1/profile-pic.png',
+			shortcut: '/assets/imgs/home-page-2/hero-1/profile-pic.png',
+			apple: '/assets/imgs/home-page-2/hero-1/profile-pic.png',
 	},
 
 }
@@ -43,7 +43,7 @@ export default function RootLayout({
 				<link rel="preload" href="/assets/fonts/dmmono-regular-webfont.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
 				<link rel="preload" href="/assets/fonts/dmmono-medium-webfont.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
 				<link rel="preload" href="/assets/fonts/dmmono-mediumitalic-webfont.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
-				<link rel="icon" href="/assets/imgs/home-page-2/template/favicon.svg" />
+				<link rel="icon" href="/assets/imgs/home-page-2/hero-1/profile-pic.png" />
 			</head>
 			<body>
 				{children}
