@@ -4,69 +4,10 @@ import { useState, useRef, useEffect } from 'react'
 import emailjs from '@emailjs/browser'
 
 export default function Contact2() {
-  useEffect(() => {
-    if (process.env.NODE_ENV === 'development') {
-      console.debug('ENV CHECK:', {
-        NEXT_PUBLIC_EMAILJS_SERVICE_ID: process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID,
-        NEXT_PUBLIC_EMAILJS_TEMPLATE_ID: process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID,
-        NEXT_PUBLIC_EMAILJS_PUBLIC_KEY: process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY,
-        NEXT_PUBLIC_RECAPTCHA_SITE_KEY: process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY,
-      })
-    }
-  }, [])
   const [status, setStatus] = useState('idle')
   const [errorMessage, setErrorMessage] = useState('')
-  const [recaptchaLoaded, setRecaptchaLoaded] = useState(false)
-  const recaptchaWidgetIdRef = useRef<number | null>(null)
 
   const formRef = useRef<HTMLFormElement | null>(null)
-
-  // Load reCAPTCHA v2 invisible script
-  useEffect(() => {
-    const siteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || ''
-    if (!siteKey) {
-      setRecaptchaLoaded(true) // No reCAPTCHA needed
-      return
-    }
-
-    const id = 'recaptcha-v2'
-    if (document.getElementById(id)) {
-      setRecaptchaLoaded(true)
-      return
-    }
-
-    const script = document.createElement('script')
-    script.src = `https://www.google.com/recaptcha/api.js?onload=onRecaptchaLoad&render=explicit`
-    script.async = true
-    script.defer = true
-    script.id = id
-    
-    // Global callback when reCAPTCHA loads
-    ;(window as any).onRecaptchaLoad = () => {
-      const container = document.getElementById('recaptcha-container')
-      if (container && !(window as any).grecaptcha) return
-      
-      try {
-        if ((window as any).grecaptcha && !recaptchaWidgetIdRef.current) {
-          recaptchaWidgetIdRef.current = (window as any).grecaptcha.render('recaptcha-container', {
-            sitekey: siteKey,
-            size: 'invisible',
-          })
-        }
-        setRecaptchaLoaded(true)
-        console.debug('reCAPTCHA v2 invisible loaded')
-      } catch (err) {
-        console.error('reCAPTCHA render error:', err)
-      }
-    }
-    
-    document.head.appendChild(script)
-
-    return () => {
-      script.remove()
-      delete (window as any).onRecaptchaLoad
-    }
-  }, [])
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -87,64 +28,6 @@ export default function Contact2() {
       phone: (form.querySelector('input[name="phone"]') as HTMLInputElement)?.value,
       subject: (form.querySelector('input[name="subject"]') as HTMLInputElement)?.value,
       message: (form.querySelector('textarea[name="message"]') as HTMLTextAreaElement)?.value,
-    }
-
-    // reCAPTCHA v2 invisible execution
-    const recaptchaSiteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || ''
-    if (recaptchaSiteKey) {
-      if (!(window as any).grecaptcha || !recaptchaLoaded) {
-        setErrorMessage('reCAPTCHA not loaded; please refresh the page')
-        setStatus('error')
-        return
-      }
-
-      try {
-        // Execute invisible reCAPTCHA and wait for token
-        const token = await new Promise<string>((resolve, reject) => {
-          const widgetId = recaptchaWidgetIdRef.current
-          if (widgetId === null) {
-            reject(new Error('reCAPTCHA widget not initialized'))
-            return
-          }
-
-          // Set callback for when token is received
-          ;(window as any).grecaptcha.ready(() => {
-            try {
-              ;(window as any).grecaptcha.execute(widgetId)
-              
-              // Poll for the response token
-              const checkToken = setInterval(() => {
-                const response = (window as any).grecaptcha.getResponse(widgetId)
-                if (response) {
-                  clearInterval(checkToken)
-                  resolve(response)
-                }
-              }, 100)
-
-              // Timeout after 30 seconds
-              setTimeout(() => {
-                clearInterval(checkToken)
-                reject(new Error('reCAPTCHA timeout'))
-              }, 30000)
-            } catch (e) {
-              reject(e)
-            }
-          })
-        })
-
-        console.debug('reCAPTCHA token received')
-        data['g-recaptcha-response'] = token
-        
-        // Reset reCAPTCHA for next submission
-        if (recaptchaWidgetIdRef.current !== null) {
-          ;(window as any).grecaptcha.reset(recaptchaWidgetIdRef.current)
-        }
-      } catch (recapErr: any) {
-        console.error('reCAPTCHA execution error:', recapErr)
-        setErrorMessage('reCAPTCHA verification failed')
-        setStatus('error')
-        return
-      }
     }
 
     try {
@@ -198,8 +81,6 @@ export default function Contact2() {
                   <form ref={formRef} onSubmit={handleSubmit}>
                     {/* Honeypot field for spam bots (should remain empty) */}
                     <input type="text" name="hp" autoComplete="off" tabIndex={-1} style={{display: 'none'}} />
-                    {/* reCAPTCHA v2 invisible container */}
-                    <div id="recaptcha-container"></div>
                     <div className="row g-3">
                       <div className="col-md-6 ">
                         <input type="text" className="form-control bg-3 border border-1 rounded-3" id="name" name="name" placeholder="Your name" aria-label="username" required />
