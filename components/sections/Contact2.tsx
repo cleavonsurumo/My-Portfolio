@@ -148,7 +148,7 @@ export default function Contact2() {
               <div className="d-flex align-items-center mb-3 position-relative d-inline-flex">
                 <div className="d-inline-block">
                   <div className="icon-flip flex-nowrap icon-shape icon-xxl border border-1 rounded-3 bg-3">
-                    <i className="ri-skype-fill text-primary-2 fs-26" />
+                    <i className="ri-microsoft-fill text-primary-2 fs-26" />
                   </div>
                 </div>
                 <div className="ps-3 h-100">
