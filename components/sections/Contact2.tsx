@@ -100,7 +100,7 @@ export default function Contact2() {
                       <div className="col-12">
                         <button
                           type="submit"
-                          className="btn btn-primary-2 rounded-2"
+                          className="btn btn-primary-2 rounded-2 border border-1"
                           disabled={status === 'sending'}
                         >
                           {status === 'sending' ? 'Sending...' : 'Send Message'}
