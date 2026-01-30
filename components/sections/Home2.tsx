@@ -14,9 +14,9 @@ export default function Home2() {
 								<div className="col-lg-5 ps-lg-5 text-lg-start text-center">
 									<div className="position-relative mb-lg-0 mb-5 p-4">
 										<img src="assets/imgs/home-page-2/hero-1/profile-pic.png" alt="zelio" />
-										<div className="position-absolute end-0 top-100 translate-middle-y icon-decorate">
-											<img src="assets/imgs/home-page-2/hero-1/icon.svg" alt="zelio" />
-										</div>
+									<div className="position-absolute end-0 top-100 translate-middle-y icon-decorate">
+										<img src="assets/imgs/home-page-2/hero-1/icon.svg" alt="zelio" />
+									</div>
 									</div>
 								</div>
 								<div className="col-lg-6 mx-lg-auto col-md-12">
