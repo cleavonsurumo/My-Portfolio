@@ -1301,6 +1301,17 @@ img {
   line-height: 7rem;
 }
 
+.section-contact-2 .d-inline-flex .icon-flip {
+  transition: all 0.3s ease;
+}
+.section-contact-2 .d-inline-flex:hover .icon-flip {
+  background-color: #62a92b !important;
+  transform: scale(1.05);
+}
+.section-contact-2 .d-inline-flex:hover .icon-flip i {
+  color: #fff !important;
+}
+
 .icon_50 {
   width: 50px;
   height: 50px;
@@ -2923,7 +2934,7 @@ textarea {
 .offCanvas__close-icon button {
   background: transparent;
   border: 0 none;
-  color: #6e4ef2;
+  color: #62a92b;
   cursor: pointer;
   font-size: 20px;
   padding: 0;
@@ -2932,7 +2943,7 @@ textarea {
   max-height: 34px;
 }
 .offCanvas__side-info {
-  border-top: 1px solid #6e4ef2;
+  border-top: 1px solid #62a92b;
   padding-top: 25px;
 }
 .offCanvas__side-info .contact-list h4 {
@@ -14148,6 +14159,9 @@ strong {
   height: 82px;
   border: 0.4px solid #c0dcbc;
   border-radius: 50%;
+}
+.section-coporation a:hover i {
+  color: #62a92b;
 }
 
 .section-skills-2 .carouselTicker__wrap {
