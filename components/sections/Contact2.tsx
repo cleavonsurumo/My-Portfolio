@@ -22,12 +22,27 @@ export default function Contact2() {
       return
     }
 
+    const now = new Date()
+    const submissionDate = now.toLocaleDateString('en-US', { 
+      year: 'numeric', 
+      month: 'long', 
+      day: 'numeric' 
+    })
+    const submissionTime = now.toLocaleTimeString('en-US', { 
+      hour: '2-digit', 
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: true 
+    })
+
     const data: any = {
       from_name: (form.querySelector('input[name="name"]') as HTMLInputElement)?.value,
       from_email: (form.querySelector('input[name="email"]') as HTMLInputElement)?.value,
       phone: (form.querySelector('input[name="phone"]') as HTMLInputElement)?.value,
       subject: (form.querySelector('input[name="subject"]') as HTMLInputElement)?.value,
       message: (form.querySelector('textarea[name="message"]') as HTMLTextAreaElement)?.value,
+      SUBMISSION_DATE: submissionDate,
+      SUBMISSION_TIME: submissionTime,
     }
 
     try {
